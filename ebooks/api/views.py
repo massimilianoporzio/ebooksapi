@@ -9,13 +9,15 @@ from ebooks.api.serializers import ReviewSerializer, EbookSerializer
 from django.conf import settings
 from django.contrib.auth.models import User
 from ebooks.api.permissions import IsAdminUserOrReadOnly, IsReviewAuthorOrReadOnly
+from ebooks.api.pagination import SmallSetPagination
 
 
 class EBookListCreateAPIView(generics.ListCreateAPIView):
 
-    queryset = Ebook.objects.all()
+    queryset = Ebook.objects.all().order_by('-id')
     serializer_class = EbookSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+    pagination_class = SmallSetPagination
 
 
 class EbookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
